@@ -14,8 +14,8 @@ public class User {
     /** Creates a user with an empty list of followees. */
     public User(String name) {
         this.name = name;
-        follows = new String[maxfCount]; // fixed-size array for storing followees
-        fCount = 0; // initial number of followees
+        this.follows = new String[this.maxfCount]; // fixed-size array for storing followees
+        this.fCount = 0; // initial number of followees
     }
 
     /**
@@ -25,33 +25,53 @@ public class User {
      */
     public User(String name, boolean gettingStarted) {
         this(name);
-        follows[0] = "Foo";
-        follows[1] = "Bar";
-        follows[2] = "Baz";
-        fCount = 3;
+        this.follows[0] = "Foo";
+        this.follows[1] = "Bar";
+        this.follows[2] = "Baz";
+        this.fCount = 3;
     }
 
     /** Returns the name of this user. */
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /** Returns the follows array. */
     public String[] getfFollows() {
-        return follows;
+        return this.follows;
     }
 
     /** Returns the number of users that this user follows. */
     public int getfCount() {
-        return fCount;
+        return this.fCount;
+    }
+
+    public String upperName(String name) {
+        String theName = name;
+        if (name.charAt(0) >= 'a' && name.charAt(0) <= 'z') {
+            char beginning = Character.toUpperCase(name.charAt(0));
+            theName = beginning + name.substring(1);
+        }
+        return theName;
+
     }
 
     /**
      * If this user follows the given name, returns true; otherwise returns false.
      */
     public boolean follows(String name) {
+        String theName = upperName(name);
         for (int i = 0; i < this.fCount; i++) {
-            if (this.follows[i].toLowerCase().equals(name.toLowerCase())) {
+            if (this.follows[i].equals(theName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean follows(String name, boolean add) {
+        for (int i = 0; i < this.fCount; i++) {
+            if (this.follows[i].equals(name)) {
                 return true;
             }
         }
@@ -64,14 +84,16 @@ public class User {
      * does nothing and returns false;
      */
     public boolean addFollowee(String name) {
-        if (this.follows(name) || this.fCount == 10) {
-            if (this.follows(name) || this.fCount == 10 || this.getName().toLowerCase() == name.toLowerCase()) {
-                return false;
-            }
-            this.follows[this.fCount] = name;
-            this.fCount++;
+        if (this.fCount >= this.maxfCount) {
+            return false;
         }
-        return true;
+        if (this.follows(name, true) || this.follows(name)) {
+            return false;
+        } else {
+            this.follows[fCount++] = name;
+            return true;
+        }
+
     }
 
     /**
@@ -80,19 +102,29 @@ public class User {
      * If the name is not in the list, does nothing and returns false.
      */
     public boolean removeFollowee(String name) {
-        if (this.fCount == 0 || !this.follows(name)) {
+        if (this.follows == null || this.follows.length == 0)
             return false;
+        if (this.follows == null || this.fCount == 0)
+            return false;
+        if (follows(name)) {
+            int indexName = indexOfName(name);
+            --fCount;
+            for (int i = 0; i < fCount; i++) {
+                this.follows[indexName] = this.follows[indexName + 1];
+            }
+            return true;
         }
-        int i = 0;
-        while (!this.follows[i].equals(name)) {
-            i++;
+        return false;
+    }
+
+    public int indexOfName(String name) {
+        for (int i = 0; i < this.follows.length; i++) {
+            if (this.follows[i].equals(name)) {
+                return i;
+            }
         }
-        for (int j = i; j < this.fCount - 1; j++) {
-            this.follows[j] = this.follows[j + 1];
-        }
-        this.follows[this.fCount - 1] = null;
-        this.fCount--;
-        return true;
+        return -1;
+
     }
 
     /**
@@ -100,13 +132,13 @@ public class User {
      * /* Notice: This is the size of the intersection of the two follows lists.
      */
     public int countMutual(User other) {
-        int countMutual = 0;
-        for (int i = 0; i < other.fCount; i++) {
-            if (this.follows(other.follows[i])) {
-                countMutual++;
+        int count = 0;
+        for (int i = 0; i < this.fCount; i++) {
+            if (other.follows(this.follows[i])) {
+                ++count;
             }
         }
-        return countMutual;
+        return count;
     }
 
     /**
@@ -114,23 +146,17 @@ public class User {
      * (if two users follow each other, they are said to be "friends.")
      */
     public boolean isFriendOf(User other) {
-        if (!this.follows(other.name)) {
-            return false;
-        }
-        for (int i = 0; i < other.fCount; i++) {
-            if (other.follows[i] == this.name) {
-                return true;
-            }
-        }
-        return false;
+        return this.follows(other.name) && other.follows(this.name);
     }
 
     /** Returns this user's name, and the names that s/he follows. */
     public String toString() {
-        String ans = name + " -> ";
+        String theName = upperName(this.name);
+        String ans = theName + " -> ";
         for (int i = 0; i < fCount; i++) {
             ans = ans + follows[i] + " ";
         }
+
         return ans;
     }
 }
