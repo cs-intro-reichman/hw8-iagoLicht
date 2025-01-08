@@ -33,7 +33,7 @@ public class User {
 
     /** Returns the name of this user. */
     public String getName() {
-        return this.name;
+        return name;
     }
 
     /** Returns the follows array. */
@@ -55,7 +55,6 @@ public class User {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -64,7 +63,6 @@ public class User {
      * If this user already follows the given name, or if the follows list is full,
      * does nothing and returns false;
      */
-
     public boolean addFollowee(String name) {
         if (this.follows(name) || this.fCount == 10) {
             if (this.follows(name) || this.fCount == 10 || this.getName().toLowerCase() == name.toLowerCase()) {
@@ -72,7 +70,6 @@ public class User {
             }
             this.follows[this.fCount] = name;
             this.fCount++;
-
         }
         return true;
     }
@@ -83,38 +80,33 @@ public class User {
      * If the name is not in the list, does nothing and returns false.
      */
     public boolean removeFollowee(String name) {
-        if (!this.follows(name) || this.fCount == 0) {
+        if (this.fCount == 0 || !this.follows(name)) {
             return false;
         }
         int i = 0;
         while (!this.follows[i].equals(name)) {
             i++;
-
-            for (int j = i; j < this.fCount - 1; j++) {
-                this.follows[j] = this.follows[j + 1];
-            }
-            this.follows[this.fCount - 1] = null;
-            this.fCount--;
         }
+        for (int j = i; j < this.fCount - 1; j++) {
+            this.follows[j] = this.follows[j + 1];
+        }
+        this.follows[this.fCount - 1] = null;
+        this.fCount--;
         return true;
-
     }
-
-    // return false;
-    // }
 
     /**
      * Counts the number of users that both this user and the other user follow.
      * /* Notice: This is the size of the intersection of the two follows lists.
      */
     public int countMutual(User other) {
-        int juntos = 0;
+        int countMutual = 0;
         for (int i = 0; i < other.fCount; i++) {
             if (this.follows(other.follows[i])) {
-                juntos++;
+                countMutual++;
             }
         }
-        return juntos;
+        return countMutual;
     }
 
     /**
@@ -122,16 +114,12 @@ public class User {
      * (if two users follow each other, they are said to be "friends.")
      */
     public boolean isFriendOf(User other) {
-
-        for (int i = 0; i < this.fCount; i++) {
-            if (!this.follows(other.name)) {
-                return false;
-            }
-            for (int j = 0; j < this.fCount; j++) {
-                if (this.follows[i].equals(other.name)) {
-                    return true;
-                }
-
+        if (!this.follows(other.name)) {
+            return false;
+        }
+        for (int i = 0; i < other.fCount; i++) {
+            if (other.follows[i] == this.name) {
+                return true;
             }
         }
         return false;
