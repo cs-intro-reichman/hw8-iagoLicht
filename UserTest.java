@@ -3,7 +3,8 @@ public class UserTest {
     public static void main(String[] args) {
         System.out.println("...Testing the User class...\n");
 
-        System.out.println("...To get started, creating a dummy user for testing the toString and follows methods...\n");
+        System.out
+                .println("...To get started, creating a dummy user for testing the toString and follows methods...\n");
         User dummy = new User("Dummy", true);
         System.out.println(dummy);
         System.out.println("Dummy follows Bar: " + dummy.follows("Bar"));
@@ -22,7 +23,7 @@ public class UserTest {
         System.out.println(alex);
 
         System.out.println("\n...Trying to add Ben again...");
-        alex.addFollowee("Ben");    
+        alex.addFollowee("Ben");
 
         System.out.println("\n...Trying to add Or, Zohar, Dror, Josh, Idan, Uri, Maya, and Dan to Alex...");
         alex.addFollowee("Or");
@@ -32,7 +33,7 @@ public class UserTest {
         alex.addFollowee("Idan");
         alex.addFollowee("Uri");
         alex.addFollowee("Maya");
-        alex.addFollowee("Dan"); // Exceeds the array limit           
+        alex.addFollowee("Dan"); // Exceeds the array limit
         System.out.println(alex);
 
         System.out.println("\n...Removing Neta...");
@@ -46,7 +47,7 @@ public class UserTest {
         System.out.println("\n...Creating a user named Orly...");
         User orly = new User("Orly");
         System.out.println(orly);
-        
+
         System.out.println("\n...Adding Boaz, Maya, Talia, Alex, and Dror to the follows list of Orly...");
         orly.addFollowee("Boaz");
         orly.addFollowee("Maya");
@@ -63,7 +64,7 @@ public class UserTest {
         System.out.println("\n...Checking if Alex and Orly are friends...");
         System.out.println("Alex is a friend of Orly: " + alex.isFriendOf(orly));
         System.out.println("Orly is a friend of Alex: " + orly.isFriendOf(alex));
-        
+
         // Making Alex and Orly friends
         System.out.println("\n...Adding Orly to the follows list of Alex, and Alex to the follows list of Orly...");
         alex.addFollowee("Orly");
@@ -73,7 +74,7 @@ public class UserTest {
         System.out.println("\n...Checking if Alex and Orly are friends...");
         System.out.println("Alex is a friend of Orly: " + alex.isFriendOf(orly));
         System.out.println("Orly is a friend of Alex: " + orly.isFriendOf(alex));
-        
+
         System.out.println("\nAll User class tests completed.");
     }
 }
