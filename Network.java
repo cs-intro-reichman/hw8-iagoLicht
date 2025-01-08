@@ -37,13 +37,27 @@ public class Network {
      * Notice that the method receives a String, and returns a User object.
      */
     public User getUser(String name) {
-        for (int i = 0; i < users.length; i++) {
+        if (userCount == 0 || users == null) {
+            return null;
+        }
+        for (int i = 0; i < userCount; i++) {
             if (users[i].getName().toLowerCase().equals(name.toLowerCase())) {
                 return this.users[i];
             }
         }
 
         return null;
+
+    }
+
+    public String letraMayu(String name) {
+        String theName = name;
+        if (name.charAt(0) >= 'a' && name.charAt(0) <= 'z') {
+            char beginning = Character.toUpperCase(name.charAt(0));
+            theName = beginning + name.substring(1);
+
+        }
+        return theName;
     }
 
     /**
@@ -77,7 +91,7 @@ public class Network {
      * or if the "follows" addition failed for some reason, returns false.
      */
     public boolean addFollowee(String name1, String name2) {
-        //// Replace the following statement with your code
+
         return false;
 
     }
